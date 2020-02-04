@@ -5,16 +5,16 @@ import (
 	"onehearttour/handlers"
 )
 
-type Route struct (
-	Name string
-	Method string
-	Pattern string
+type Route struct {
+	Name        string
+	Method      string
+	Pattern     string
 	HandlerFunc http.HandlerFunc
-)
+}
 
-type Routes Route[]
+type Routes []Route
 
-var routes Routes = Routes {
+var routes Routes = Routes{
 	Route{
 		"Get Posts",
 		"GET",
@@ -31,6 +31,6 @@ var routes Routes = Routes {
 		"Signup",
 		"POST",
 		"/signup",
-		handlers.Signup
-	}
+		handlers.Signup,
+	},
 }
