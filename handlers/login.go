@@ -13,7 +13,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		resp.Message = "Error"
-		return
 	}
 
 	db := GetDB()
@@ -23,6 +22,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if dbUser.Password == user.Password {
 		w.WriteHeader(http.StatusOK)
 		resp.Message = "Success"
+		tkn, exp := CreateJWTString(user.Username)
+		http.SetCookie(w, &http.Cookie{
+			Name:    "token",
+			Value:   tkn,
+			Expires: exp,
+		})
 	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		resp.Message = "Error"
@@ -31,5 +36,4 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	respJSON, _ := json.Marshal(resp)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(respJSON)
-
 }
