@@ -17,15 +17,15 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 	svc := GetS3()
 	var posts []Post
 	var post Post
-	bucketName := os.Getenv("BUCKET_REGION")
+	bucketRegion := os.Getenv("BUCKET_REGION")
 
-	result, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{Bucket: aws.String("onehearttour")})
+	result, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{Bucket: aws.String(os.Getenv("BUCKET_NAME"))})
 	if err != nil {
 		fmt.Println(err)
 	}
 	for i, item := range result.Contents {
 		if i != 0 {
-			var url string = "https://s3-" + bucketName + ".amazonaws.com/onehearttour/" + *item.Key
+			var url string = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + *item.Key
 			post.Name = strings.Split(*item.Key, "/")[1]
 			post.Link = url
 			posts = append(posts, post)

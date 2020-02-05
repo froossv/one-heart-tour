@@ -37,7 +37,7 @@ func UploadPost(w http.ResponseWriter, r *http.Request) {
 	)
 	uploader := s3manager.NewUploader(s)
 	_, err = uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String("onehearttour/posts"),
+		Bucket: aws.String(os.Getenv("BUCKET_NAME")),
 		Key:    aws.String(fileHeader.Filename),
 		Body:   file,
 	})
