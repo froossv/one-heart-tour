@@ -15,7 +15,14 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+//Claims JTW Claims
 type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims
+}
+
+//Post Links
+type Post struct {
+	Name string `json:"name"`
+	Link string `json:"link"`
 }

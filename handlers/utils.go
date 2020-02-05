@@ -4,8 +4,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/dgrijalva/jwt-go"
-
 	"github.com/jinzhu/gorm"
 	"github.com/lib/pq"
 )
@@ -31,4 +33,12 @@ func CreateJWTString(Username string) (string, time.Time) {
 	jwtKey := []byte(os.Getenv("JWTSIGNINGKEY"))
 	tokenString, _ := token.SignedString(jwtKey)
 	return tokenString, expirationTime
+}
+
+//GetS3 Credentials
+func GetS3() *s3.S3 {
+	sess, _ := session.NewSession(&aws.Config{
+		Region: aws.String(os.Getenv("BUCKET_REGION"))},
+	)
+	return s3.New(sess)
 }

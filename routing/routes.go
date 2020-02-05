@@ -22,6 +22,12 @@ var routes Routes = Routes{
 		handlers.GetPosts,
 	},
 	Route{
+		"Post Posts",
+		"POST",
+		"/posts",
+		handlers.UploadPost,
+	},
+	Route{
 		"Login",
 		"POST",
 		"/login",
