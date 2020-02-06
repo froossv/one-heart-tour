@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -14,8 +17,8 @@ import (
 //GetPosts Get Feed
 func GetPosts(w http.ResponseWriter, r *http.Request) {
 
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	svc := GetS3()
-	var posts []Post
 	var post Post
 	bucketRegion := os.Getenv("BUCKET_REGION")
 
@@ -23,15 +26,9 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	for i, item := range result.Contents {
-		if i != 0 {
-			var url string = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + *item.Key
-			post.Name = strings.Split(*item.Key, "/")[1]
-			post.Link = url
-			posts = append(posts, post)
-		}
-	}
-	postJSON, errm := json.Marshal(posts)
+	post.Name = strings.Split(*result.Contents[id].Key, "/")[1]
+	post.Link = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + *result.Contents[id].Key
+	postJSON, errm := json.Marshal(post)
 	if errm != nil {
 		panic(errm)
 	}

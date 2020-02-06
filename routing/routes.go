@@ -18,7 +18,7 @@ var routes Routes = Routes{
 	Route{
 		"Get Posts",
 		"GET",
-		"/posts",
+		"/posts/{id}",
 		handlers.GetPosts,
 	},
 	Route{
