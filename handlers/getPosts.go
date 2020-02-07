@@ -25,7 +25,13 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 	result, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{Bucket: aws.String(os.Getenv("BUCKET_NAME"))})
 	if err != nil {
 		fmt.Println(err)
+		post.Name = strings.Split(*result.Contents[id].Key, "/")[1]
+		post.Link = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + "/" + *result.Contents[id].Key
+	} else {
+		post.Link = "null"
+		post.Name = "End Of List"
 	}
+
 	post.Name = strings.Split(*result.Contents[id].Key, "/")[1]
 	post.Link = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + "/" + *result.Contents[id].Key
 	postJSON, errm := json.Marshal(post)
