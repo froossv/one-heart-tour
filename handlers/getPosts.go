@@ -27,7 +27,7 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	post.Name = strings.Split(*result.Contents[id].Key, "/")[1]
-	post.Link = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + *result.Contents[id].Key
+	post.Link = "https://s3-" + bucketRegion + ".amazonaws.com/" + os.Getenv("BUCKET_NAME") + "/" + *result.Contents[id].Key
 	postJSON, errm := json.Marshal(post)
 	if errm != nil {
 		panic(errm)
